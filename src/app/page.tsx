@@ -9,10 +9,10 @@ export default function Home() {
   const [recipient, setRecipient] = useState<string>('');
   const [status, setStatus] = useState<string>('');
 
-  // 🔹 ওয়ালেট কানেক্ট ফাংশন (MetaMask / Bitget)
+  // 🔹 Wallet Connection
   const connectWallet = async () => {
     if (typeof window.ethereum === 'undefined') {
-      alert('দয়া করে MetaMask বা Bitget Wallet ইন্সটল করুন!');
+      alert('Please install MetaMask or Bitget Wallet!');
       return;
     }
     try {
@@ -28,15 +28,15 @@ export default function Home() {
     }
   };
 
-  // 🔹 ট্রানজ্যাকশন পাঠানোর ফাংশন
+  // 🔹 Handle Transaction
   const handleSendTip = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!account) {
-      alert('প্রথমে ওয়ালেট কানেক্ট করুন!');
+      alert('Please connect your wallet first!');
       return;
     }
     if (!recipient) {
-      alert('Recipient Address দিন!');
+      alert('Please enter a recipient address!');
       return;
     }
 
@@ -44,15 +44,13 @@ export default function Home() {
       setStatus('Preparing transaction...');
       const parsedAmount = parseFloat(amount);
       if (isNaN(parsedAmount) || parsedAmount <= 0) {
-        alert('সঠিক অ্যামাউন্ট দিন');
+        alert('Please enter a valid amount');
         return;
       }
 
-      // ETH সেন্ড করার জন্য
       const weiValue = BigInt(Math.floor(parsedAmount * 1e18));
       const hexValue = '0x' + weiValue.toString(16);
 
-      // মেটামাস্ক / বিটগেট ট্রানজ্যাকশন রিকোয়েস্ট
       const txHash = await window.ethereum.request({
         method: 'eth_sendTransaction',
         params: [
@@ -65,7 +63,7 @@ export default function Home() {
       });
 
       setStatus(`✅ Success! Tx Hash: ${txHash}`);
-      alert(`টিপ সফলভাবে পাঠানো হয়েছে! Tx Hash: ${txHash}`);
+      alert(`Tip sent successfully! Tx Hash: ${txHash}`);
     } catch (error: any) {
       console.error(error);
       setStatus(`❌ Transaction failed: ${error.message || 'User rejected'}`);
@@ -100,14 +98,14 @@ export default function Home() {
         </div>
 
         <form onSubmit={handleSendTip} className="space-y-4">
-          {/* 2️⃣ STEP 2: Recipient EVM/USDC Address */}
+          {/* 2️⃣ STEP 2: Recipient Address */}
           <div>
             <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-              Recipient EVM / USDC Address
+              Recipient Address
             </label>
             <input
               type="text"
-              placeholder="0x... (যাকে টিপ পাঠাবেন তার এড্রেস)"
+              placeholder="Enter EVM wallet address (0x...)"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
               className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white placeholder-slate-500 font-mono"
@@ -115,7 +113,7 @@ export default function Home() {
             />
           </div>
 
-          {/* Asset Selection */}
+          {/* Select Token */}
           <div>
             <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Select Token
@@ -146,7 +144,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Amount Selection */}
+          {/* Select Amount */}
           <div>
             <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Amount ({token})
@@ -173,7 +171,7 @@ export default function Home() {
               <input
                 type="number"
                 step="0.0001"
-                placeholder="Amount (e.g. 0.01)"
+                placeholder="Enter ETH amount (e.g. 0.01)"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white placeholder-slate-500"
