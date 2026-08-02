@@ -2,13 +2,16 @@
 
 import { useState } from 'react';
 
+// 🔹 Arc Testnet Contract Address
+const CONTRACT_ADDRESS = "0x1234567890123456789012345678901234567890"; 
+
 export default function Home() {
   const [amount, setAmount] = useState('');
   const [recipient, setRecipient] = useState('');
 
   const handleSendTip = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Sending ${amount} ETH tip to ${recipient}`);
+    alert(`Sending ${amount} ETH tip to ${recipient} via contract: ${CONTRACT_ADDRESS}`);
   };
 
   return (
@@ -17,9 +20,17 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
           Arc Spark Tips
         </h1>
-        <p className="text-slate-400 text-center mb-8 text-sm">
+        <p className="text-slate-400 text-center mb-6 text-sm">
           A seamless Web3 tipping platform on Arc Testnet
         </p>
+
+        {/* Contract Address Display Box */}
+        <div className="bg-slate-900/60 border border-slate-700/50 rounded-xl p-3 mb-6 text-center">
+          <span className="text-xs text-slate-400 block mb-1">Contract Address:</span>
+          <code className="text-xs font-mono text-cyan-400 break-all">
+            {CONTRACT_ADDRESS}
+          </code>
+        </div>
 
         <form onSubmit={handleSendTip} className="space-y-4">
           <div>
