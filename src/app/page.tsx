@@ -2,6 +2,45 @@
 
 import { useState } from 'react';
 
+// 🔹 Arc Testnet Config
+const ARC_TESTNET_CHAIN_ID = '0x1389'; // (মেটামাস্কের জন্য Hex format)
+
+const switchOrAddArcNetwork = async () => {
+  if (typeof window.ethereum === 'undefined') return;
+
+  try {
+    // ১. ওয়ালেটকে Arc Testnet-এ সুইচ করতে বলা
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: ARC_TESTNET_CHAIN_ID }],
+    });
+  } catch (error: any) {
+    // ২. যদি Arc Testnet ওয়ালেটে আগে থেকে না থাকে (Error Code 4902), তবে নেটওয়ার্ক অ্যাড করা
+    if (error.code === 4902) {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: ARC_TESTNET_CHAIN_ID,
+              chainName: 'Arc Testnet',
+              nativeCurrency: {
+                name: 'Arc',
+                symbol: 'ARC', // বা আপনার Arc Testnet-এর গ্যাসে ব্যবহৃত আসল টোকেন সিম্বল
+                decimals: 18,
+              },
+              rpcUrls: ['https://rpc.testnet.arc.network'], // Arc Testnet RPC URL
+              blockExplorerUrls: ['https://explorer.testnet.arc.network'],
+            },
+          ],
+        });
+      } catch (addError) {
+        console.error('Failed to add Arc Testnet', addError);
+      }
+    }
+  }
+};
+
 export default function Home() {
   const [account, setAccount] = useState<string>('');
   const [token, setToken] = useState<'USDC' | 'ETH'>('USDC');
@@ -9,7 +48,7 @@ export default function Home() {
   const [recipient, setRecipient] = useState<string>('');
   const [status, setStatus] = useState<string>('');
 
-  // 🔹 Wallet Connection
+  // 🔹 Wallet Connection + Network Switch
   const connectWallet = async () => {
     if (typeof window.ethereum === 'undefined') {
       alert('Please install MetaMask or Bitget Wallet!');
@@ -17,10 +56,14 @@ export default function Home() {
     }
     try {
       setStatus('Connecting wallet...');
+
+      // ওয়ালেট কানেক্ট নেওয়ার সময় Arc Testnet-এ সুইচ রিকোয়েস্ট
+      await switchOrAddArcNetwork();
+
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       if (accounts && accounts.length > 0) {
         setAccount(accounts[0]);
-        setStatus('Wallet connected!');
+        setStatus('Wallet connected to Arc Testnet!');
       }
     } catch (err: any) {
       console.error(err);
@@ -42,6 +85,10 @@ export default function Home() {
 
     try {
       setStatus('Preparing transaction...');
+
+      // ট্রানজ্যাকশন করার আগে নিশ্চিত হওয়া যে Arc Testnet সিলেক্টেড আছে
+      await switchOrAddArcNetwork();
+
       const parsedAmount = parseFloat(amount);
       if (isNaN(parsedAmount) || parsedAmount <= 0) {
         alert('Please enter a valid amount');
