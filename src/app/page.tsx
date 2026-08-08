@@ -110,7 +110,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-sky-200 text-slate-900 flex items-center justify-center p-6">
+    <main className="min-h-screen bg-sky-300 text-slate-900 flex items-center justify-center p-6">
       <div className="max-w-md w-full bg-slate-900 text-white rounded-2xl p-8 border border-sky-400 shadow-2xl">
         <h1 className="text-3xl font-bold text-center mb-1 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
           Arc Spark Tips
