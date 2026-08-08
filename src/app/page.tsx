@@ -109,7 +109,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-[#121212] text-white flex items-center justify-center p-4">
+    <main className="min-h-screen w-full flex items-center justify-center p-4">
       {/* Light Blue Box in Center */}
       <div className="max-w-md w-full bg-[#1a2634] backdrop-blur-md rounded-3xl p-8 border border-sky-400/40 shadow-2xl">
         <h1 className="text-3xl font-extrabold text-center mb-1 bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">
