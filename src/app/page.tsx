@@ -2,17 +2,20 @@
 
 import { useState } from 'react';
 
-const ARC_TESTNET_CHAIN_ID = '0x4cef52';
+// 🔹 Arc Testnet-এর সঠিক Config
+const ARC_TESTNET_CHAIN_ID = '0x4cef52'; // 5042002 in hex
 
 const switchOrAddArcNetwork = async () => {
   if (typeof window.ethereum === 'undefined') return;
 
   try {
+    // ১. ওয়ালেটকে Arc Testnet-এ সুইচ করতে বলা
     await window.ethereum.request({
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: ARC_TESTNET_CHAIN_ID }],
     });
   } catch (error: any) {
+    // ২. যদি Arc Testnet ওয়ালেটে যোগ করা না থাকে (Error 4902)
     if (error.code === 4902 || error.code === -32603) {
       try {
         await window.ethereum.request({
@@ -45,6 +48,7 @@ export default function Home() {
   const [recipient, setRecipient] = useState<string>('');
   const [status, setStatus] = useState<string>('');
 
+  // 🔹 Wallet Connection
   const connectWallet = async () => {
     if (typeof window.ethereum === 'undefined') {
       alert('Please install MetaMask or Bitget Wallet!');
@@ -61,10 +65,11 @@ export default function Home() {
       }
     } catch (err: any) {
       console.error(err);
-      setStatus(`❌ Connection failed: ${err.message}`);
+      setStatus(❌ Connection failed: ${err.message});
     }
   };
 
+  // 🔹 Handle Transaction
   const handleSendTip = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!account) {
@@ -100,43 +105,45 @@ export default function Home() {
         ],
       });
 
-      setStatus(`✅ Success! Tx Hash: ${txHash}`);
-      alert(`Tip sent successfully! Tx Hash: ${txHash}`);
+      setStatus(✅ Success! Tx Hash: ${txHash});
+      alert(Tip sent successfully! Tx Hash: ${txHash});
     } catch (error: any) {
       console.error(error);
-      setStatus(`❌ Transaction failed: ${error.message || 'User rejected'}`);
+      setStatus(❌ Transaction failed: ${error.message || 'User rejected'});
     }
   };
 
   return (
-    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6">
-      <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-        <h1 className="text-2xl font-bold text-center mb-2">
+    <main className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-6">
+      <div className="max-w-md w-full bg-slate-800 rounded-2xl p-8 border border-slate-700 shadow-xl">
+        <h1 className="text-3xl font-bold text-center mb-1 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
           Arc Spark Tips
         </h1>
-        <p className="text-sm text-slate-400 text-center mb-6">
-          Enter any recipient&apos;s EVM / USDC address to send instant tips on Arc Testnet!
+        <p className="text-slate-400 text-center mb-6 text-xs">
+          Enter any recipient's EVM / USDC address to send instant tips on Arc Testnet!
         </p>
 
-        <div className="mb-4">
+        {/* 1️⃣ STEP 1: Connect Wallet */}
+        <div className="mb-5">
           {!account ? (
             <button
               onClick={connectWallet}
-              className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 rounded-xl transition duration-200"
+              className="w-full bg-slate-700 hover:bg-slate-600 border border-slate-600 text-cyan-400 font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition duration-200"
             >
               🦊 Connect Wallet (MetaMask / Bitget)
             </button>
           ) : (
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-3 text-center">
-              <span className="text-xs text-slate-400 block mb-1">Connected Wallet:</span>
-              <code className="text-xs font-mono text-indigo-400 break-all">{account}</code>
+            <div className="bg-slate-900/80 border border-cyan-500/30 rounded-xl p-3 text-center">
+              <span className="text-xs text-slate-400 block mb-1">Your Connected Wallet:</span>
+              <code className="text-xs font-mono text-cyan-400 break-all">{account}</code>
             </div>
           )}
         </div>
 
         <form onSubmit={handleSendTip} className="space-y-4">
+          {/* 2️⃣ STEP 2: Recipient Address */}
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1">
+            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Recipient Address
             </label>
             <input
@@ -144,43 +151,45 @@ export default function Home() {
               placeholder="Enter EVM wallet address (0x...)"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
-              className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 text-white font-mono"
+              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white placeholder-slate-500 font-mono"
               required
             />
           </div>
 
+          {/* Select Token */}
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1">
+            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Select Token
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => { setToken('USDC'); setAmount('1'); }}
-                className={`py-2 rounded-xl text-sm font-medium border transition ${
+                className={`py-2.5 rounded-xl font-semibold text-sm border transition ${
                   token === 'USDC'
-                    ? 'bg-indigo-600 border-indigo-500 text-white'
-                    : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700'
+                    ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400'
+                    : 'bg-slate-900 border-slate-700 text-slate-400'
                 }`}
               >
-                USDC
+                💵 USDC
               </button>
               <button
                 type="button"
                 onClick={() => { setToken('ETH'); setAmount('0.01'); }}
-                className={`py-2 rounded-xl text-sm font-medium border transition ${
+                className={`py-2.5 rounded-xl font-semibold text-sm border transition ${
                   token === 'ETH'
-                    ? 'bg-indigo-600 border-indigo-500 text-white'
-                    : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700'
+                    ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400'
+                    : 'bg-slate-900 border-slate-700 text-slate-400'
                 }`}
               >
-                ETH
+                💎 ETH
               </button>
             </div>
           </div>
 
+          {/* Select Amount */}
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1">
+            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Amount ({token})
             </label>
 
@@ -191,10 +200,10 @@ export default function Home() {
                     key={val}
                     type="button"
                     onClick={() => setAmount(val)}
-                    className={`py-2 rounded-xl text-xs font-medium border transition ${
+                    className={`py-2 rounded-lg text-xs font-bold border ${
                       amount === val
-                        ? 'bg-indigo-600 border-indigo-500 text-white'
-                        : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700'
+                        ? 'bg-cyan-500 text-slate-900 border-cyan-400'
+                        : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'
                     }`}
                   >
                     ${val}
@@ -205,25 +214,26 @@ export default function Home() {
               <input
                 type="number"
                 step="0.0001"
-                placeholder="Enter amount"
+                placeholder="Enter ETH amount (e.g. 0.01)"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 text-white"
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white placeholder-slate-500"
                 required
               />
             )}
           </div>
 
+          {/* Send Button */}
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 rounded-xl transition duration-200 mt-2"
+            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold py-3.5 rounded-xl shadow-lg transition duration-200 mt-2"
           >
-            Send Tip ({amount} {token})
+            Send Tip ({amount} {token}) ✨
           </button>
         </form>
 
         {status && (
-          <p className="mt-4 text-xs font-mono text-center text-slate-400 break-all">
+          <p className="mt-4 text-xs font-mono text-center text-cyan-400 break-all">
             {status}
           </p>
         )}
