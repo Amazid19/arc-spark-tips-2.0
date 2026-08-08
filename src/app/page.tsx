@@ -109,13 +109,13 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-black text-white flex flex-col items-center justify-center p-4">
-      {/* Centered Light Blue Box */}
-      <div className="max-w-md w-full bg-slate-900/95 backdrop-blur-md rounded-3xl p-8 border border-sky-400/50 shadow-[0_0_40px_rgba(56,189,248,0.15)] my-auto">
-        <h1 className="text-3xl font-extrabold text-center mb-1 bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">
+    <main className="min-h-screen w-full bg-[#121212] text-white flex items-center justify-center p-4">
+      {/* Light Blue Box in Center */}
+      <div className="max-w-md w-full bg-[#1a2634] backdrop-blur-md rounded-3xl p-8 border border-sky-400/40 shadow-2xl">
+        <h1 className="text-3xl font-extrabold text-center mb-1 bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">
           Arc Spark Tips
         </h1>
-        <p className="text-sky-200/75 text-center mb-6 text-xs">
+        <p className="text-sky-200/80 text-center mb-6 text-xs">
           Enter any recipient&apos;s EVM / USDC address to send instant tips on Arc Testnet!
         </p>
 
@@ -123,12 +123,12 @@ export default function Home() {
           {!account ? (
             <button
               onClick={connectWallet}
-              className="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold py-3.5 rounded-2xl flex items-center justify-center gap-2 transition duration-200 shadow-lg shadow-sky-500/25"
+              className="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold py-3.5 rounded-2xl flex items-center justify-center gap-2 transition duration-200 shadow-lg shadow-sky-600/20"
             >
               🦊 Connect Wallet (MetaMask / Bitget)
             </button>
           ) : (
-            <div className="bg-black/60 border border-sky-400/40 rounded-2xl p-3 text-center">
+            <div className="bg-[#111822] border border-sky-400/30 rounded-2xl p-3 text-center">
               <span className="text-xs text-sky-300 block mb-1">My Connected Wallet:</span>
               <code className="text-xs font-mono text-sky-400 break-all">{account}</code>
             </div>
@@ -145,7 +145,7 @@ export default function Home() {
               placeholder="Enter EVM wallet address (0x...)"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
-              className="w-full bg-black/50 border border-sky-900 focus:border-sky-400 rounded-2xl px-4 py-3 text-sm focus:outline-none text-white placeholder-sky-700 font-mono transition"
+              className="w-full bg-[#111822] border border-sky-900/50 focus:border-sky-400 rounded-2xl px-4 py-3 text-sm focus:outline-none text-white placeholder-sky-700 font-mono transition"
               required
             />
           </div>
@@ -161,7 +161,7 @@ export default function Home() {
                 className={`py-2.5 rounded-2xl font-semibold text-sm border transition ${
                   token === 'USDC'
                     ? 'bg-sky-400 text-black border-sky-300 font-bold shadow-md shadow-sky-400/20'
-                    : 'bg-black/50 border-sky-900 text-sky-400 hover:border-sky-700'
+                    : 'bg-[#111822] border-sky-900/50 text-sky-400 hover:border-sky-700'
                 }`}
               >
                 💵 USDC
@@ -172,7 +172,7 @@ export default function Home() {
                 className={`py-2.5 rounded-2xl font-semibold text-sm border transition ${
                   token === 'ETH'
                     ? 'bg-sky-400 text-black border-sky-300 font-bold shadow-md shadow-sky-400/20'
-                    : 'bg-black/50 border-sky-900 text-sky-400 hover:border-sky-700'
+                    : 'bg-[#111822] border-sky-900/50 text-sky-400 hover:border-sky-700'
                 }`}
               >
                 💎 ETH
@@ -195,7 +195,7 @@ export default function Home() {
                     className={`py-2 rounded-xl text-xs font-bold border transition ${
                       amount === val
                         ? 'bg-sky-400 text-black border-sky-300 shadow-md shadow-sky-400/20'
-                        : 'bg-black/50 border-sky-900 text-sky-300 hover:border-sky-700'
+                        : 'bg-[#111822] border-sky-900/50 text-sky-300 hover:border-sky-700'
                     }`}
                   >
                     ${val}
@@ -209,7 +209,7 @@ export default function Home() {
                 placeholder="Enter ETH amount (e.g. 0.01)"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full bg-black/50 border border-sky-900 focus:border-sky-400 rounded-2xl px-4 py-3 text-sm focus:outline-none text-white placeholder-sky-700 transition"
+                className="w-full bg-[#111822] border border-sky-900/50 focus:border-sky-400 rounded-2xl px-4 py-3 text-sm focus:outline-none text-white placeholder-sky-700 transition"
                 required
               />
             )}
@@ -217,7 +217,7 @@ export default function Home() {
 
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-300 hover:to-blue-400 text-black font-extrabold py-3.5 rounded-2xl shadow-lg shadow-sky-400/25 transition duration-200 mt-2"
+            className="w-full bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-300 hover:to-blue-400 text-black font-extrabold py-3.5 rounded-2xl shadow-lg shadow-sky-400/20 transition duration-200 mt-2"
           >
             Send Tip ({amount} {token}) ✨
           </button>
