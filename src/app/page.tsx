@@ -115,7 +115,7 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-center mb-1 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
           Arc Spark Tips
         </h1>
-        <p className="text-slate-400 text-center mb-6 text-xs">
+        <p className="text-slate-300 text-center mb-6 text-xs">
           Enter any recipient&apos;s EVM / USDC address to send instant tips on Arc Testnet!
         </p>
 
@@ -129,7 +129,7 @@ export default function Home() {
             </button>
           ) : (
             <div className="bg-black border border-cyan-500/30 rounded-xl p-3 text-center">
-              <span className="text-xs text-slate-400 block mb-1">Your Connected Wallet:</span>
+              <span className="text-xs text-slate-300 block mb-1">Your Connected Wallet:</span>
               <code className="text-xs font-mono text-cyan-400 break-all">{account}</code>
             </div>
           )}
@@ -137,7 +137,7 @@ export default function Home() {
 
         <form onSubmit={handleSendTip} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
               Recipient Address
             </label>
             <input
@@ -145,13 +145,13 @@ export default function Home() {
               placeholder="Enter EVM wallet address (0x...)"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
-              className="w-full bg-black border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white placeholder-slate-600 font-mono"
+              className="w-full bg-black border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white placeholder-slate-400 font-mono"
               required
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
               Select Token
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -159,7 +159,7 @@ export default function Home() {
                 type="button"
                 onClick={() => { setToken('USDC'); setAmount('1'); }}
                 className={`py-2.5 rounded-xl font-semibold text-sm border transition ${
-                  token === 'USDC' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'bg-black border-slate-800 text-slate-400'
+                  token === 'USDC' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'bg-black border-slate-800 text-slate-300'
                 }`}
               >
                 💵 USDC
@@ -168,7 +168,7 @@ export default function Home() {
                 type="button"
                 onClick={() => { setToken('ETH'); setAmount('0.01'); }}
                 className={`py-2.5 rounded-xl font-semibold text-sm border transition ${
-                  token === 'ETH' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'bg-black border-slate-800 text-slate-400'
+                  token === 'ETH' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'bg-black border-slate-800 text-slate-300'
                 }`}
               >
                 💎 ETH
@@ -177,7 +177,7 @@ export default function Home() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
               Amount ({token})
             </label>
 
@@ -189,7 +189,7 @@ export default function Home() {
                     type="button"
                     onClick={() => setAmount(val)}
                     className={`py-2 rounded-lg text-xs font-bold border ${
-                      amount === val ? 'bg-cyan-500 text-black border-cyan-400' : 'bg-black border-slate-800 text-slate-300 hover:border-slate-600'
+                      amount === val ? 'bg-cyan-500 text-black border-cyan-400 font-extrabold' : 'bg-black border-slate-800 text-slate-200 hover:border-slate-600'
                     }`}
                   >
                     ${val}
@@ -203,7 +203,7 @@ export default function Home() {
                 placeholder="Enter ETH amount (e.g. 0.01)"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full bg-black border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white placeholder-slate-600"
+                className="w-full bg-black border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white placeholder-slate-400"
                 required
               />
             )}
