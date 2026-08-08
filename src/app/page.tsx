@@ -2,20 +2,17 @@
 
 import { useState } from 'react';
 
-// Arc Testnet configuration setup
-const ARC_TESTNET_CHAIN_ID = '0x4cef52'; // 5042002 in hex
+const ARC_TESTNET_CHAIN_ID = '0x4cef52';
 
 const switchOrAddArcNetwork = async () => {
   if (typeof window.ethereum === 'undefined') return;
 
   try {
-    // Requesting wallet to switch to Arc Testnet
     await window.ethereum.request({
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: ARC_TESTNET_CHAIN_ID }],
     });
   } catch (error: any) {
-    // Handling error if Arc Testnet is not added to the wallet yet (Error 4902)
     if (error.code === 4902 || error.code === -32603) {
       try {
         await window.ethereum.request({
@@ -48,7 +45,6 @@ export default function Home() {
   const [recipient, setRecipient] = useState<string>('');
   const [status, setStatus] = useState<string>('');
 
-  // Handle wallet connection
   const connectWallet = async () => {
     if (typeof window.ethereum === 'undefined') {
       alert('Please install MetaMask or Bitget Wallet!');
@@ -69,7 +65,6 @@ export default function Home() {
     }
   };
 
-  // Handle tipping transaction
   const handleSendTip = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!account) {
@@ -114,9 +109,9 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6">
+    <main className="min-h-screen w-full bg-black text-white flex flex-col items-center justify-center p-4">
       {/* Centered Light Blue Box */}
-      <div className="max-w-md w-full bg-slate-900/95 backdrop-blur-md rounded-3xl p-8 border border-sky-400/50 shadow-[0_0_40px_rgba(56,189,248,0.15)]">
+      <div className="max-w-md w-full bg-slate-900/95 backdrop-blur-md rounded-3xl p-8 border border-sky-400/50 shadow-[0_0_40px_rgba(56,189,248,0.15)] my-auto">
         <h1 className="text-3xl font-extrabold text-center mb-1 bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">
           Arc Spark Tips
         </h1>
@@ -124,7 +119,6 @@ export default function Home() {
           Enter any recipient&apos;s EVM / USDC address to send instant tips on Arc Testnet!
         </p>
 
-        {/* STEP 1: Connect Wallet Section */}
         <div className="mb-5">
           {!account ? (
             <button
@@ -142,7 +136,6 @@ export default function Home() {
         </div>
 
         <form onSubmit={handleSendTip} className="space-y-4">
-          {/* STEP 2: Recipient Address Input */}
           <div>
             <label className="block text-xs font-semibold text-sky-300 uppercase tracking-wider mb-2">
               Recipient Address
@@ -157,7 +150,6 @@ export default function Home() {
             />
           </div>
 
-          {/* Token Selection */}
           <div>
             <label className="block text-xs font-semibold text-sky-300 uppercase tracking-wider mb-2">
               Select Token
@@ -188,7 +180,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Amount Selection */}
           <div>
             <label className="block text-xs font-semibold text-sky-300 uppercase tracking-wider mb-2">
               Amount ({token})
@@ -224,7 +215,6 @@ export default function Home() {
             )}
           </div>
 
-          {/* Action Button */}
           <button
             type="submit"
             className="w-full bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-300 hover:to-blue-400 text-black font-extrabold py-3.5 rounded-2xl shadow-lg shadow-sky-400/25 transition duration-200 mt-2"
