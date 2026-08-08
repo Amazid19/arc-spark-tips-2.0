@@ -110,9 +110,9 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white flex items-center justify-center p-6">
-      <div className="max-w-md w-full bg-slate-900 rounded-2xl p-8 border border-slate-800 shadow-xl">
-        <h1 className="text-3xl font-bold text-center mb-1 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+    <main className="min-h-screen bg-sky-200 text-slate-900 flex items-center justify-center p-6">
+      <div className="max-w-md w-full bg-slate-900 text-white rounded-2xl p-8 border border-sky-400 shadow-2xl">
+        <h1 className="text-3xl font-bold text-center mb-1 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
           Arc Spark Tips
         </h1>
         <p className="text-slate-300 text-center mb-6 text-xs">
@@ -123,21 +123,21 @@ export default function Home() {
           {!account ? (
             <button
               onClick={connectWallet}
-              className="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-cyan-400 font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition duration-200"
+              className="w-full bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition duration-200"
             >
               🦊 Connect Wallet (MetaMask / Bitget)
             </button>
           ) : (
-            <div className="bg-black border border-cyan-500/30 rounded-xl p-3 text-center">
-              <span className="text-xs text-slate-300 block mb-1">Your Connected Wallet:</span>
-              <code className="text-xs font-mono text-cyan-400 break-all">{account}</code>
+            <div className="bg-black border border-sky-500/40 rounded-xl p-3 text-center">
+              <span className="text-xs text-sky-300 block mb-1">Your Connected Wallet:</span>
+              <code className="text-xs font-mono text-sky-400 break-all">{account}</code>
             </div>
           )}
         </div>
 
         <form onSubmit={handleSendTip} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-sky-300 uppercase tracking-wider mb-2">
               Recipient Address
             </label>
             <input
@@ -145,13 +145,13 @@ export default function Home() {
               placeholder="Enter EVM wallet address (0x...)"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
-              className="w-full bg-black border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white placeholder-slate-400 font-mono"
+              className="w-full bg-black border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-sky-400 text-white placeholder-slate-500 font-mono"
               required
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-sky-300 uppercase tracking-wider mb-2">
               Select Token
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -159,7 +159,7 @@ export default function Home() {
                 type="button"
                 onClick={() => { setToken('USDC'); setAmount('1'); }}
                 className={`py-2.5 rounded-xl font-semibold text-sm border transition ${
-                  token === 'USDC' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'bg-black border-slate-800 text-slate-300'
+                  token === 'USDC' ? 'bg-sky-500 text-slate-950 font-bold border-sky-300' : 'bg-black border-slate-700 text-slate-300'
                 }`}
               >
                 💵 USDC
@@ -168,7 +168,7 @@ export default function Home() {
                 type="button"
                 onClick={() => { setToken('ETH'); setAmount('0.01'); }}
                 className={`py-2.5 rounded-xl font-semibold text-sm border transition ${
-                  token === 'ETH' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'bg-black border-slate-800 text-slate-300'
+                  token === 'ETH' ? 'bg-sky-500 text-slate-950 font-bold border-sky-300' : 'bg-black border-slate-700 text-slate-300'
                 }`}
               >
                 💎 ETH
@@ -177,7 +177,7 @@ export default function Home() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-sky-300 uppercase tracking-wider mb-2">
               Amount ({token})
             </label>
 
@@ -189,7 +189,7 @@ export default function Home() {
                     type="button"
                     onClick={() => setAmount(val)}
                     className={`py-2 rounded-lg text-xs font-bold border ${
-                      amount === val ? 'bg-cyan-500 text-black border-cyan-400 font-extrabold' : 'bg-black border-slate-800 text-slate-200 hover:border-slate-600'
+                      amount === val ? 'bg-sky-500 text-slate-950 border-sky-300' : 'bg-black border-slate-700 text-slate-300 hover:border-slate-500'
                     }`}
                   >
                     ${val}
@@ -203,7 +203,7 @@ export default function Home() {
                 placeholder="Enter ETH amount (e.g. 0.01)"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full bg-black border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white placeholder-slate-400"
+                className="w-full bg-black border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-sky-400 text-white placeholder-slate-500"
                 required
               />
             )}
@@ -211,14 +211,14 @@ export default function Home() {
 
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold py-3.5 rounded-xl shadow-lg transition duration-200 mt-2"
+            className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition duration-200 mt-2"
           >
             Send Tip ({amount} {token}) ✨
           </button>
         </form>
 
         {status && (
-          <p className="mt-4 text-xs font-mono text-center text-cyan-400 break-all">
+          <p className="mt-4 text-xs font-mono text-center text-sky-300 break-all">
             {status}
           </p>
         )}
