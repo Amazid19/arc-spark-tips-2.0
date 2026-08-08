@@ -54,6 +54,7 @@ export default function Home() {
       alert('Please install MetaMask or Bitget Wallet!');
       return;
     }
+
     try {
       setStatus('Connecting wallet...');
       await switchOrAddArcNetwork();
@@ -65,7 +66,7 @@ export default function Home() {
       }
     } catch (err: any) {
       console.error(err);
-      setStatus(❌ Connection failed: ${err.message});
+      setStatus(`❌ Connection failed: ${err.message}`);
     }
   };
 
@@ -105,11 +106,11 @@ export default function Home() {
         ],
       });
 
-      setStatus(✅ Success! Tx Hash: ${txHash});
-      alert(Tip sent successfully! Tx Hash: ${txHash});
+      setStatus(`✅ Success! Tx Hash: ${txHash}`);
+      alert(`Tip sent successfully! Tx Hash: ${txHash}`);
     } catch (error: any) {
       console.error(error);
-      setStatus(❌ Transaction failed: ${error.message || 'User rejected'});
+      setStatus(`❌ Transaction failed: ${error.message || 'User rejected'}`);
     }
   };
 
@@ -120,7 +121,7 @@ export default function Home() {
           Arc Spark Tips
         </h1>
         <p className="text-slate-400 text-center mb-6 text-xs">
-          Enter any recipient's EVM / USDC address to send instant tips on Arc Testnet!
+          Enter any recipient&apos;s EVM / USDC address to send instant tips on Arc Testnet!
         </p>
 
         {/* 1️⃣ STEP 1: Connect Wallet */}
@@ -166,9 +167,7 @@ export default function Home() {
                 type="button"
                 onClick={() => { setToken('USDC'); setAmount('1'); }}
                 className={`py-2.5 rounded-xl font-semibold text-sm border transition ${
-                  token === 'USDC'
-                    ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400'
-                    : 'bg-slate-900 border-slate-700 text-slate-400'
+                  token === 'USDC' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'bg-slate-900 border-slate-700 text-slate-400'
                 }`}
               >
                 💵 USDC
@@ -177,9 +176,7 @@ export default function Home() {
                 type="button"
                 onClick={() => { setToken('ETH'); setAmount('0.01'); }}
                 className={`py-2.5 rounded-xl font-semibold text-sm border transition ${
-                  token === 'ETH'
-                    ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400'
-                    : 'bg-slate-900 border-slate-700 text-slate-400'
+                  token === 'ETH' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'bg-slate-900 border-slate-700 text-slate-400'
                 }`}
               >
                 💎 ETH
@@ -201,9 +198,7 @@ export default function Home() {
                     type="button"
                     onClick={() => setAmount(val)}
                     className={`py-2 rounded-lg text-xs font-bold border ${
-                      amount === val
-                        ? 'bg-cyan-500 text-slate-900 border-cyan-400'
-                        : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'
+                      amount === val ? 'bg-cyan-500 text-slate-900 border-cyan-400' : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'
                     }`}
                   >
                     ${val}
