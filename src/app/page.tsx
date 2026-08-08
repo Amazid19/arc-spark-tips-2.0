@@ -2,20 +2,17 @@
 
 import { useState } from 'react';
 
-// 🔹 Arc Testnet-এর সঠিক Config
-const ARC_TESTNET_CHAIN_ID = '0x4cef52'; // 5042002 in hex
+const ARC_TESTNET_CHAIN_ID = '0x4cef52';
 
 const switchOrAddArcNetwork = async () => {
   if (typeof window.ethereum === 'undefined') return;
 
   try {
-    // ১. ওয়ালেটকে Arc Testnet-এ সুইচ করতে বলা
     await window.ethereum.request({
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: ARC_TESTNET_CHAIN_ID }],
     });
   } catch (error: any) {
-    // ২. যদি Arc Testnet ওয়ালেটে যোগ করা না থাকে (Error 4902)
     if (error.code === 4902 || error.code === -32603) {
       try {
         await window.ethereum.request({
@@ -48,7 +45,6 @@ export default function Home() {
   const [recipient, setRecipient] = useState<string>('');
   const [status, setStatus] = useState<string>('');
 
-  // 🔹 Wallet Connection
   const connectWallet = async () => {
     if (typeof window.ethereum === 'undefined') {
       alert('Please install MetaMask or Bitget Wallet!');
@@ -70,7 +66,6 @@ export default function Home() {
     }
   };
 
-  // 🔹 Handle Transaction
   const handleSendTip = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!account) {
@@ -124,7 +119,6 @@ export default function Home() {
           Enter any recipient&apos;s EVM / USDC address to send instant tips on Arc Testnet!
         </p>
 
-        {/* 1️⃣ STEP 1: Connect Wallet */}
         <div className="mb-5">
           {!account ? (
             <button
@@ -142,7 +136,6 @@ export default function Home() {
         </div>
 
         <form onSubmit={handleSendTip} className="space-y-4">
-          {/* 2️⃣ STEP 2: Recipient Address */}
           <div>
             <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Recipient Address
@@ -157,7 +150,6 @@ export default function Home() {
             />
           </div>
 
-          {/* Select Token */}
           <div>
             <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Select Token
@@ -184,7 +176,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Select Amount */}
           <div>
             <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Amount ({token})
@@ -218,7 +209,6 @@ export default function Home() {
             )}
           </div>
 
-          {/* Send Button */}
           <button
             type="submit"
             className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold py-3.5 rounded-xl shadow-lg transition duration-200 mt-2"
