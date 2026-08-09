@@ -12,13 +12,13 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-sky-500 flex flex-col items-center justify-center p-4 text-black">
+    <main className="min-h-screen bg-sky-100 flex flex-col items-center justify-center p-4 text-black">
       <div className="bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-2xl max-w-md w-full">
         <h1 className="text-3xl font-extrabold text-center mb-2 text-slate-900">
           Arc Spark Tips
         </h1>
         <p className="text-center text-slate-700 mb-6 text-sm">
-          Enter any recipient's EVM / USDC address to send instant tips on Arc Testnet!
+          Enter any recipient&apos;s EVM / USDC address to send instant tips on Arc Testnet!
         </p>
 
         <div className="mb-6 flex justify-center">
