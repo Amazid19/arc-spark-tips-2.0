@@ -1,174 +1,69 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-
-const ARC_TESTNET_CHAIN_ID = '0x4cef52';
-
-const switchOrAddArcNetwork = async () => {
-  if (typeof window.ethereum === 'undefined') return;
-
-  try {
-    await window.ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: ARC_TESTNET_CHAIN_ID }],
-    });
-  } catch (error: any) {
-    if (error.code === 4902 || error.code === -32603) {
-      try {
-        await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: ARC_TESTNET_CHAIN_ID,
-              chainName: 'Arc Testnet',
-              nativeCurrency: {
-                name: 'USDC',
-                symbol: 'USDC',
-                decimals: 6,
-              },
-              rpcUrls: ['https://rpc.testnet.arc.network'],
-              blockExplorerUrls: ['https://testnet.arcscan.app'],
-            },
-          ],
-        });
-      } catch (addError) {
-        console.error('Failed to add Arc Testnet', addError);
-      }
-    }
-  }
-};
+import React, { useState } from "react";
 
 export default function Home() {
-  const [account, setAccount] = useState<string>('');
-  const [token, setToken] = useState<'USDC' | 'ETH'>('USDC');
-  const [amount, setAmount] = useState<string>('1');
-  const [recipient, setRecipient] = useState<string>('');
-  const [status, setStatus] = useState<string>('');
+  const [recipient, setRecipient] = useState("");
+  const [token, setToken] = useState("USDC");
+  const [amount, setAmount] = useState("1");
 
-  const connectWallet = async () => {
-    if (typeof window.ethereum === 'undefined') {
-      alert('Please install MetaMask or Bitget Wallet!');
-      return;
-    }
-
-    try {
-      setStatus('Connecting wallet...');
-      await switchOrAddArcNetwork();
-
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      if (accounts && accounts.length > 0) {
-        setAccount(accounts[0]);
-        setStatus('Wallet connected to Arc Testnet!');
-      }
-    } catch (err: any) {
-      console.error(err);
-      setStatus(`❌ Connection failed: ${err.message}`);
-    }
-  };
-
-  const handleSendTip = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!account) {
-      alert('Please connect your wallet first!');
-      return;
-    }
-    if (!recipient) {
-      alert('Please enter a recipient address!');
-      return;
-    }
-
-    try {
-      setStatus('Preparing transaction...');
-      await switchOrAddArcNetwork();
-
-      const parsedAmount = parseFloat(amount);
-      if (isNaN(parsedAmount) || parsedAmount <= 0) {
-        alert('Please enter a valid amount');
-        return;
-      }
-
-      const weiValue = BigInt(Math.floor(parsedAmount * 1e18));
-      const hexValue = '0x' + weiValue.toString(16);
-
-      const txHash = await window.ethereum.request({
-        method: 'eth_sendTransaction',
-        params: [
-          {
-            from: account,
-            to: recipient,
-            value: token === 'ETH' ? hexValue : '0x0',
-          },
-        ],
-      });
-
-      setStatus(`✅ Success! Tx Hash: ${txHash}`);
-      alert(`Tip sent successfully! Tx Hash: ${txHash}`);
-    } catch (error: any) {
-      console.error(error);
-      setStatus(`❌ Transaction failed: ${error.message || 'User rejected'}`);
-    }
+  const handleSendTip = () => {
+    alert(`Sending ${amount} ${token} to ${recipient}`);
   };
 
   return (
-    <main className="min-h-screen bg-sky-300 text-slate-900 flex items-center justify-center p-6">
-      <div className="max-w-md w-full bg-slate-900 text-white rounded-2xl p-8 border border-sky-400 shadow-2xl">
-        <h1 className="text-3xl font-bold text-center mb-1 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+    <main className="min-h-screen bg-sky-500 flex flex-col items-center justify-center p-4 text-black">
+      <div className="bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-2xl max-w-md w-full">
+        <h1 className="text-3xl font-extrabold text-center mb-2 text-slate-900">
           Arc Spark Tips
         </h1>
-        <p className="text-slate-300 text-center mb-6 text-xs">
-          Enter any recipient&apos;s EVM / USDC address to send instant tips on Arc Testnet!
+        <p className="text-center text-slate-700 mb-6 text-sm">
+          Enter any recipient's EVM / USDC address to send instant tips on Arc Testnet!
         </p>
 
-        <div className="mb-5">
-          {!account ? (
-            <button
-              onClick={connectWallet}
-              className="w-full bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition duration-200"
-            >
-              🦊 Connect Wallet (MetaMask / Bitget)
-            </button>
-          ) : (
-            <div className="bg-black border border-sky-500/40 rounded-xl p-3 text-center">
-              <span className="text-xs text-sky-300 block mb-1">Your Connected Wallet:</span>
-              <code className="text-xs font-mono text-sky-400 break-all">{account}</code>
-            </div>
-          )}
+        <div className="mb-6 flex justify-center">
+          <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-xl shadow transition duration-200">
+            🦊 Connect Wallet (MetaMask / Bitget)
+          </button>
         </div>
 
-        <form onSubmit={handleSendTip} className="space-y-4">
+        <div className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-sky-300 uppercase tracking-wider mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-1">
               Recipient Address
             </label>
             <input
               type="text"
-              placeholder="Enter EVM wallet address (0x...)"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
-              className="w-full bg-black border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-sky-400 text-white placeholder-slate-500 font-mono"
-              required
+              placeholder="Enter EVM wallet address (0x...)"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white text-black"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-sky-300 uppercase tracking-wider mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-1">
               Select Token
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="flex gap-2">
               <button
                 type="button"
-                onClick={() => { setToken('USDC'); setAmount('1'); }}
-                className={`py-2.5 rounded-xl font-semibold text-sm border transition ${
-                  token === 'USDC' ? 'bg-sky-500 text-slate-950 font-bold border-sky-300' : 'bg-black border-slate-700 text-slate-300'
+                onClick={() => setToken("USDC")}
+                className={`flex-1 py-2 rounded-lg border font-medium ${
+                  token === "USDC"
+                    ? "bg-sky-600 text-white border-sky-600"
+                    : "bg-white text-slate-700 border-slate-300"
                 }`}
               >
                 💵 USDC
               </button>
               <button
                 type="button"
-                onClick={() => { setToken('ETH'); setAmount('0.01'); }}
-                className={`py-2.5 rounded-xl font-semibold text-sm border transition ${
-                  token === 'ETH' ? 'bg-sky-500 text-slate-950 font-bold border-sky-300' : 'bg-black border-slate-700 text-slate-300'
+                onClick={() => setToken("ETH")}
+                className={`flex-1 py-2 rounded-lg border font-medium ${
+                  token === "ETH"
+                    ? "bg-sky-600 text-white border-sky-600"
+                    : "bg-white text-slate-700 border-slate-300"
                 }`}
               >
                 💎 ETH
@@ -177,51 +72,40 @@ export default function Home() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-sky-300 uppercase tracking-wider mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-1">
               Amount ({token})
             </label>
-
-            {token === 'USDC' ? (
-              <div className="grid grid-cols-5 gap-2">
-                {['0.5', '1', '2', '3', '5'].map((val) => (
-                  <button
-                    key={val}
-                    type="button"
-                    onClick={() => setAmount(val)}
-                    className={`py-2 rounded-lg text-xs font-bold border ${
-                      amount === val ? 'bg-sky-500 text-slate-950 border-sky-300' : 'bg-black border-slate-700 text-slate-300 hover:border-slate-500'
-                    }`}
-                  >
-                    ${val}
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <input
-                type="number"
-                step="0.0001"
-                placeholder="Enter ETH amount (e.g. 0.01)"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="w-full bg-black border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-sky-400 text-white placeholder-slate-500"
-                required
-              />
-            )}
+            <div className="grid grid-cols-5 gap-2 mb-2">
+              {["0.5", "1", "2", "3", "5"].map((val) => (
+                <button
+                  key={val}
+                  type="button"
+                  onClick={() => setAmount(val)}
+                  className={`py-1.5 text-sm rounded-lg border font-medium ${
+                    amount === val
+                      ? "bg-sky-600 text-white border-sky-600"
+                      : "bg-white text-slate-700 border-slate-300"
+                  }`}
+                >
+                  ${val}
+                </button>
+              ))}
+            </div>
+            <input
+              type="text"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white text-black text-center font-bold"
+            />
           </div>
 
           <button
-            type="submit"
-            className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition duration-200 mt-2"
+            onClick={handleSendTip}
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-200 mt-4"
           >
             Send Tip ({amount} {token}) ✨
           </button>
-        </form>
-
-        {status && (
-          <p className="mt-4 text-xs font-mono text-center text-sky-300 break-all">
-            {status}
-          </p>
-        )}
+        </div>
       </div>
     </main>
   );
